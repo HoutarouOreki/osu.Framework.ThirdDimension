@@ -2,6 +2,7 @@
 using osu.Framework.Graphics.OpenGL.Vertices;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
 using osuTK;
 using osuTK.Graphics;
 using System;
@@ -16,7 +17,7 @@ namespace osu.Framework.ThirdDimension
 
         public float FNear = 0.1f;
         public float FFar = 500f;
-        public float Fov = 90f;
+        public float Fov = 70;
         public float AspectRatio => Width / Height;
         public float FovRad => 1f / MathF.Tan(Fov * 0.5f / 180 * MathF.PI);
 
@@ -28,27 +29,9 @@ namespace osu.Framework.ThirdDimension
 
         protected override void LoadComplete()
         {
-            Meshes.Add(new Mesh(new[]
-            {
-                new Triangle3D(new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 1, 0)),
-                new Triangle3D(new Vector3(0, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 0, 0)),
-
-                new Triangle3D(new Vector3(1, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 1, 1)),
-                new Triangle3D(new Vector3(1, 0, 0), new Vector3(1, 1, 1), new Vector3(1, 0, 1)),
-
-                new Triangle3D(new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(0, 1, 1)),
-                new Triangle3D(new Vector3(1, 0, 1), new Vector3(0, 1, 1), new Vector3(0, 0, 1)),
-
-                new Triangle3D(new Vector3(0, 0, 1), new Vector3(0, 1, 1), new Vector3(0, 1, 0)),
-                new Triangle3D(new Vector3(0, 0, 1), new Vector3(0, 1, 0), new Vector3(0, 0, 0)),
-
-                new Triangle3D(new Vector3(0, 1, 0), new Vector3(0, 1, 1), new Vector3(1, 1, 1)),
-                new Triangle3D(new Vector3(0, 1, 0), new Vector3(1, 1, 1), new Vector3(1, 1, 0)),
-
-                new Triangle3D(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 1)),
-                new Triangle3D(new Vector3(0, 0, 0), new Vector3(1, 0, 1), new Vector3(1, 0, 0)),
-            })
-            { Translation = new Vector3(0.5f, 1f, 2) });
+            Meshes.Add(Mesh.Cube);
+            Meshes.Add(Mesh.Cube);
+            //{ Translation = new Vector3(0.5f, 1f, 2) });
 
             matProj.M00 = AspectRatio * FovRad;
             matProj.M11 = FovRad;
@@ -63,10 +46,14 @@ namespace osu.Framework.ThirdDimension
         protected override void Update()
         {
             base.Update();
-            foreach (var mesh in Meshes)
-            {
-                mesh.Translation.X = MathF.Sin((float)Time.Current / 1000) + 0.5f;
-            }
+            var mesh = Meshes[0];
+            mesh.Translation.X = MathF.Sin((float)Time.Current / 1000) - 0.5f;
+            mesh.Translation.Y = MathF.Sin((float)Time.Current / 1521) - 0.5f;
+            mesh.Translation.Z = MathF.Sin((float)Time.Current / 876) + 4;
+            mesh = Meshes[1];
+            mesh.Translation.X = MathF.Sin((float)Time.Current / 400) - 0.5f;
+            mesh.Translation.Y = MathF.Sin((float)Time.Current / 721) - 0.5f;
+            mesh.Translation.Z = MathF.Sin((float)Time.Current / 1276) + 5;
         }
 
         protected override DrawNode CreateDrawNode() => new SpatialSpaceDrawNode(this);
@@ -92,9 +79,11 @@ namespace osu.Framework.ThirdDimension
                         Mat4x4.MultiplyMatrixVector(ttri.P2, out triProjected.P2, source.matProj);
                         Mat4x4.MultiplyMatrixVector(ttri.P3, out triProjected.P3, source.matProj);
 
-                        var priTri = new Graphics.Primitives.Triangle(triProjected.P1.Xy * source.DrawSize * 0.5f,
-                            triProjected.P2.Xy * source.DrawSize * 0.5f,
-                            triProjected.P3.Xy * source.DrawSize * 0.5f);
+                        var priTri = new Graphics.Primitives.Triangle(triProjected.P1.Xy + Vector2.One, triProjected.P2.Xy + Vector2.One, triProjected.P3.Xy + Vector2.One);
+
+                        priTri = new Graphics.Primitives.Triangle(priTri.P0 * source.DrawSize * 0.5f,
+                            priTri.P1 * source.DrawSize * 0.5f,
+                            priTri.P2 * source.DrawSize * 0.5f);
 
                         //DrawTriangle(Texture, priTri,
                         //Color4.Gray, null, null, new Vector2(InflationAmount.X / DrawRectangle.Width, InflationAmount.Y / DrawRectangle.Height));
@@ -108,8 +97,9 @@ namespace osu.Framework.ThirdDimension
             private void DrawLine(Vector2 p1, Vector2 p2)
             {
                 var directionOfLine = (p2 - p1).Normalized();
-                var pp = new Vector2(-directionOfLine.Y, directionOfLine.X);
-                DrawQuad(Texture.WhitePixel, new Graphics.Primitives.Quad(p1 - pp, p1 + pp, p2 - pp, p2 + pp), Color4.Blue);
+                const float lineThickness = 3;
+                var pp = new Vector2(-directionOfLine.Y, directionOfLine.X) * lineThickness * 0.5f;
+                DrawQuad(Texture.WhitePixel, new Graphics.Primitives.Quad(p1 - pp, p1 + pp, p2 - pp, p2 + pp), Color4.Goldenrod);
             }
         }
     }
