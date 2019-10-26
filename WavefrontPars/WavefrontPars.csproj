@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ppy.osu.Framework" Version="2019.1021.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2019.1023.0" />
   </ItemGroup>
 
 </Project>
