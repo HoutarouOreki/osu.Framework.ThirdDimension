@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.ThirdDimension", "osu.Framework.ThirdDimension\osu.Framework.ThirdDimension.csproj", "{83137F12-BFCD-4EA5-982E-7E18C4E9F2B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu.Framework.ThirdDimension", "osu.Framework.ThirdDimension\osu.Framework.ThirdDimension.csproj", "{83137F12-BFCD-4EA5-982E-7E18C4E9F2B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WavefrontPars", "WavefrontPars\WavefrontPars.csproj", "{48AA7DEA-049A-4D93-AD54-54EFA17F048C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WavefrontPars.Test", "WavefrontPars.Test\WavefrontPars.Test.csproj", "{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{83137F12-BFCD-4EA5-982E-7E18C4E9F2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83137F12-BFCD-4EA5-982E-7E18C4E9F2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83137F12-BFCD-4EA5-982E-7E18C4E9F2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48AA7DEA-049A-4D93-AD54-54EFA17F048C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48AA7DEA-049A-4D93-AD54-54EFA17F048C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48AA7DEA-049A-4D93-AD54-54EFA17F048C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48AA7DEA-049A-4D93-AD54-54EFA17F048C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

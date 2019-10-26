@@ -1,20 +1,11 @@
 ﻿using osuTK;
+using WavefrontPars;
 
 namespace osu.Framework.ThirdDimension
 {
-    public class Mesh
+    public class Object3DSamples
     {
-        public Vector3 Translation;
-
-        public readonly Triangle3D[] Tris;
-
-        public Mesh(params Triangle3D[] triangles)
-        {
-            Tris = triangles;
-            Translation = Vector3.Zero;
-        }
-
-        public static Mesh GetNewCube() => new Mesh(new[]
+        public static Object3D GetNewCube() => new Object3D("Cube", new[]
         {
             new Triangle3D(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(-0.5f, 0.5f, -0.5f), new Vector3(0.5f, 0.5f, -0.5f)),
             new Triangle3D(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, -0.5f), new Vector3(0.5f, -0.5f, -0.5f)),
@@ -35,7 +26,7 @@ namespace osu.Framework.ThirdDimension
             new Triangle3D(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, -0.5f, 0.5f), new Vector3(-0.5f, -0.5f, 0.5f)),
         });
 
-        public static Mesh GetNewPlane() => new Mesh(new[]
+        public static Object3D GetNewPlane() => new Object3D("Plane", new[]
         {
             new Triangle3D(new Vector3(-0.5f, 0, -0.5f), new Vector3(0.5f, 0, -0.5f), new Vector3(0.5f, 0, 0.5f)),
             new Triangle3D(new Vector3(-0.5f, 0, -0.5f), new Vector3(0.5f, 0, 0.5f), new Vector3(-0.5f, 0, 0.5f)),

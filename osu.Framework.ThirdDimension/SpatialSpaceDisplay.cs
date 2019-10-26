@@ -6,6 +6,7 @@ using osuTK;
 using osuTK.Graphics;
 using System;
 using System.Collections.Generic;
+using WavefrontPars;
 
 namespace osu.Framework.ThirdDimension
 {
@@ -24,17 +25,17 @@ namespace osu.Framework.ThirdDimension
 
         private Mat4x4 matProj;
 
-        public List<Mesh> Meshes = new List<Mesh>();
+        public List<Object3D> Meshes = new List<Object3D>();
 
         protected override void LoadComplete()
         {
-            var cube = Mesh.GetNewCube();
+            var cube = Object3DSamples.GetNewCube();
             //cube.Translation = new Vector3(0, 0, 3);
             Meshes.Add(cube);
-            cube = Mesh.GetNewCube();
+            cube = Object3DSamples.GetNewCube();
             Meshes.Add(cube);
             //{ Translation = new Vector3(0.5f, 1f, 2) });
-            var plane = Mesh.GetNewPlane();
+            var plane = Object3DSamples.GetNewPlane();
             Meshes.Add(plane);
             plane.Translation = new Vector3(0, 2, 2);
 
@@ -95,7 +96,7 @@ namespace osu.Framework.ThirdDimension
 
                 foreach (var mesh in source.Meshes)
                 {
-                    foreach (var tri in mesh.Tris)
+                    foreach (var tri in mesh.Triangles)
                     {
                         var triProjected = new Triangle3D();
 
@@ -104,7 +105,7 @@ namespace osu.Framework.ThirdDimension
                         var triRotatedZ = new Triangle3D();
                         var triRotatedZX = new Triangle3D();
 
-                        if (mesh.Tris.Length > 2)
+                        if (mesh.Triangles.Count > 2)
                         {
                             Mat4x4.MultiplyMatrixVector(ttri.P1, out triRotatedZ.P1, matRotZ);
                             Mat4x4.MultiplyMatrixVector(ttri.P2, out triRotatedZ.P2, matRotZ);
@@ -147,7 +148,7 @@ namespace osu.Framework.ThirdDimension
                         Mat4x4.MultiplyMatrixVector(triTranslated.P2, out triProjected.P2, source.matProj);
                         Mat4x4.MultiplyMatrixVector(triTranslated.P3, out triProjected.P3, source.matProj);
 
-                        var priTri = new Graphics.Primitives.Triangle(triProjected.P1.Xy + Vector2.One, triProjected.P2.Xy + Vector2.One, triProjected.P3.Xy + Vector2.One);
+                        var priTri = new Graphics.Primitives.Triangle(new Vector2(triProjected.P1.X, triProjected.P1.Y) + Vector2.One, new Vector2(triProjected.P2.X, triProjected.P2.Y) + Vector2.One, new Vector2(triProjected.P3.X, triProjected.P3.Y) + Vector2.One);
 
                         priTri = new Graphics.Primitives.Triangle(priTri.P0 * source.DrawSize * 0.5f,
                             priTri.P1 * source.DrawSize * 0.5f,

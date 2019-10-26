@@ -1,6 +1,6 @@
 ﻿using osuTK;
 
-namespace osu.Framework.ThirdDimension
+namespace WavefrontPars
 {
     public struct Triangle3D
     {

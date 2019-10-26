@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
+using WavefrontPars;
 
 namespace osu.Framework.ThirdDimension
 {
@@ -33,7 +34,7 @@ namespace osu.Framework.ThirdDimension
         {
             private Triangle tri;
 
-            public TriangleDrawNode(DrawableTriangle source) : base(source) => tri = new Triangle(source.tri.P1.Xy, source.tri.P2.Xy, source.tri.P3.Xy);
+            public TriangleDrawNode(DrawableTriangle source) : base(source) => tri = new Triangle(new Vector2(source.tri.P1.X, source.tri.P1.Y), new Vector2(source.tri.P2.X, source.tri.P2.Y), new Vector2(source.tri.P3.X, source.tri.P3.Y));
 
             protected override void Blit(Action<TexturedVertex2D> vertexAction)
             {
