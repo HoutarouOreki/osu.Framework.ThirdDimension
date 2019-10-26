@@ -19,7 +19,7 @@ namespace osu.Framework.ThirdDimension
         public float FFar = 500f;
         public float Fov = 90;
         public float AspectRatio => Width / Height;
-        public float FovRad => 1f / MathF.Tan(Fov * 0.5f / 180 * MathF.PI);
+        public float FovRad => 1f / (float)Math.Tan(Fov * 0.5f / 180 * Math.PI);
 
         public SpatialSpaceDisplay() => Texture = Texture.WhitePixel;
 
@@ -53,13 +53,13 @@ namespace osu.Framework.ThirdDimension
         {
             //    base.Update();
             //var mesh = Meshes[0];
-            //    mesh.Translation.X = MathF.Sin((float)Time.Current / 1000) - 0.5f;
-            //    mesh.Translation.Y = MathF.Sin((float)Time.Current / 1521) - 0.5f;
-            //    mesh.Translation.Z = MathF.Sin((float)Time.Current / 876);
+            //    mesh.Translation.X = (float)Math.Sin((float)Time.Current / 1000) - 0.5f;
+            //    mesh.Translation.Y = (float)Math.Sin((float)Time.Current / 1521) - 0.5f;
+            //    mesh.Translation.Z = (float)Math.Sin((float)Time.Current / 876);
             var mesh = Meshes[1];
-            mesh.Translation.X = MathF.Sin((float) Time.Current / 400) - 0.5f;
-            mesh.Translation.Y = MathF.Sin((float) Time.Current / 721) - 0.5f;
-            mesh.Translation.Z = MathF.Sin((float) Time.Current / 1276);
+            mesh.Translation.X = (float)Math.Sin((float) Time.Current / 400) - 0.5f;
+            mesh.Translation.Y = (float)Math.Sin((float) Time.Current / 721) - 0.5f;
+            mesh.Translation.Z = (float)Math.Sin((float) Time.Current / 1276);
         }
 
     protected override DrawNode CreateDrawNode() => new SpatialSpaceDrawNode(this);
@@ -79,19 +79,19 @@ namespace osu.Framework.ThirdDimension
                 var fTheta = (float)source.Time.Current * 0.001f;
 
                 // rotZ
-                matRotZ.M00 = MathF.Cos(fTheta);
-                matRotZ.M01 = MathF.Sin(fTheta);
-                matRotZ.M10 = -MathF.Sin(fTheta);
-                matRotZ.M11 = MathF.Cos(fTheta);
+                matRotZ.M00 = (float)Math.Cos(fTheta);
+                matRotZ.M01 = (float)Math.Sin(fTheta);
+                matRotZ.M10 = -(float)Math.Sin(fTheta);
+                matRotZ.M11 = (float)Math.Cos(fTheta);
                 matRotZ.M22 = 1;
                 matRotZ.M33 = 1;
 
                 // rotX
                 matRotX.M00 = 1;
-                matRotX.M11 = MathF.Cos(fTheta * 0.5f);
-                matRotX.M12 = MathF.Sin(fTheta * 0.5f);
-                matRotX.M21 = -MathF.Sin(fTheta * 0.5f);
-                matRotX.M22 = MathF.Cos(fTheta * 0.5f);
+                matRotX.M11 = (float)Math.Cos(fTheta * 0.5f);
+                matRotX.M12 = (float)Math.Sin(fTheta * 0.5f);
+                matRotX.M21 = -(float)Math.Sin(fTheta * 0.5f);
+                matRotX.M22 = (float)Math.Cos(fTheta * 0.5f);
                 matRotX.M33 = 1;
 
                 foreach (var mesh in source.Meshes)
