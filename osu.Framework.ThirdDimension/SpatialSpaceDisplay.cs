@@ -29,16 +29,6 @@ namespace osu.Framework.ThirdDimension
 
         protected override void LoadComplete()
         {
-            var cube = Object3DSamples.GetNewCube();
-            //cube.Translation = new Vector3(0, 0, 3);
-            Meshes.Add(cube);
-            cube = Object3DSamples.GetNewCube();
-            Meshes.Add(cube);
-            //{ Translation = new Vector3(0.5f, 1f, 2) });
-            var plane = Object3DSamples.GetNewPlane();
-            Meshes.Add(plane);
-            plane.Translation = new Vector3(0, 2, 2);
-
             matProj.M00 = AspectRatio * FovRad;
             matProj.M11 = FovRad;
             matProj.M22 = FFar / (FFar - FNear);
@@ -49,20 +39,7 @@ namespace osu.Framework.ThirdDimension
             base.LoadComplete();
         }
 
-        protected override void Update()
-        {
-            //    base.Update();
-            //var mesh = Meshes[0];
-            //    mesh.Translation.X = (float)Math.Sin((float)Time.Current / 1000) - 0.5f;
-            //    mesh.Translation.Y = (float)Math.Sin((float)Time.Current / 1521) - 0.5f;
-            //    mesh.Translation.Z = (float)Math.Sin((float)Time.Current / 876);
-            var mesh = Meshes[1];
-            mesh.Translation.X = (float)Math.Sin((float) Time.Current / 400) - 0.5f;
-            mesh.Translation.Y = (float)Math.Sin((float) Time.Current / 721) - 0.5f;
-            mesh.Translation.Z = (float)Math.Sin((float) Time.Current / 1276);
-        }
-
-    protected override DrawNode CreateDrawNode() => new SpatialSpaceDrawNode(this);
+        protected override DrawNode CreateDrawNode() => new SpatialSpaceDrawNode(this);
 
         private class SpatialSpaceDrawNode : SpriteDrawNode
         {

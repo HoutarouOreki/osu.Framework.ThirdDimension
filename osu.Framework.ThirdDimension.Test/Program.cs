@@ -1,4 +1,4 @@
-﻿namespace osu.Framework.ThirdDimension
+﻿namespace osu.Framework.ThirdDimension.Test
 {
     public class Program
     {

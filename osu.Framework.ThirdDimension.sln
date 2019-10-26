@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WavefrontPars", "WavefrontP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WavefrontPars.Test", "WavefrontPars.Test\WavefrontPars.Test.csproj", "{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.ThirdDimension.Test", "osu.Framework.ThirdDimension.Test\osu.Framework.ThirdDimension.Test.csproj", "{709A8DB4-7A6D-4142-9D94-46A7737AC1D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{908CFD23-3B30-49BE-BB27-2CEB19CF6E0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{709A8DB4-7A6D-4142-9D94-46A7737AC1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{709A8DB4-7A6D-4142-9D94-46A7737AC1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{709A8DB4-7A6D-4142-9D94-46A7737AC1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{709A8DB4-7A6D-4142-9D94-46A7737AC1D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
