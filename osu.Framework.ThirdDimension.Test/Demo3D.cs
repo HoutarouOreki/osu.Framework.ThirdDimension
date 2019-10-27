@@ -7,6 +7,7 @@ namespace osu.Framework.ThirdDimension.Test
     {
         private SpatialSpaceDisplay spatialDisplay;
 
+        private const float camera_speed = 3;
         private Vector3 cameraVelocity;
 
         protected override void LoadComplete()
@@ -26,16 +27,22 @@ namespace osu.Framework.ThirdDimension.Test
             switch (e.Key)
             {
                 case osuTK.Input.Key.Up:
-                    cameraVelocity.Y = 1;
+                    cameraVelocity.Z = camera_speed;
                     break;
                 case osuTK.Input.Key.Down:
-                    cameraVelocity.Y = -1;
+                    cameraVelocity.Z = -camera_speed;
                     break;
                 case osuTK.Input.Key.Left:
-                    cameraVelocity.X = -1;
+                    cameraVelocity.X = -camera_speed;
                     break;
                 case osuTK.Input.Key.Right:
-                    cameraVelocity.X = 1;
+                    cameraVelocity.X = camera_speed;
+                    break;
+                case osuTK.Input.Key.LShift:
+                    cameraVelocity.Y = -camera_speed;
+                    break;
+                case osuTK.Input.Key.Space:
+                    cameraVelocity.Y = camera_speed;
                     break;
             }
             return base.OnKeyDown(e);
@@ -45,13 +52,17 @@ namespace osu.Framework.ThirdDimension.Test
         {
             switch (e.Key)
             {
-                case osuTK.Input.Key.Up:
-                case osuTK.Input.Key.Down:
-                    cameraVelocity.Y = 0;
-                    break;
                 case osuTK.Input.Key.Left:
                 case osuTK.Input.Key.Right:
                     cameraVelocity.X = 0;
+                    break;
+                case osuTK.Input.Key.LShift:
+                case osuTK.Input.Key.Space:
+                    cameraVelocity.Y = 0;
+                    break;
+                case osuTK.Input.Key.Up:
+                case osuTK.Input.Key.Down:
+                    cameraVelocity.Z = 0;
                     break;
             }
             return base.OnKeyUp(e);
