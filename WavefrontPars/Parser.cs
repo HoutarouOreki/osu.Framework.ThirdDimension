@@ -7,7 +7,7 @@ namespace WavefrontPars
 {
     public static class Parser
     {
-        public static IEnumerable<Object3D> ParseText(string s)
+        public static List<Object3D> ParseText(string s)
         {
             var currObjName = (string)null;
             var currObjVectors = new List<Vector3>();
