@@ -13,30 +13,34 @@ namespace osu.Framework.ThirdDimension
     public class SpatialSpaceDisplay : Sprite
     {
         public Vector3 CameraPosition = new Vector3(0, 0, -3);
-        public Vector3 CameraRotation = Vector3.Zero;
+        public Quaternion CameraRotation = new Quaternion(new Vector3(0));
 
-        public float FNear = 0.1f;
-        public float FFar = 500f;
-        public float Fov = 90;
-        public float AspectRatio => Width / Height;
+        private float fNear = 0.1f;
+        private float fFar = 500f;
+        private float fov = 90;
+
+        private Mat4x4 projectionMatrix;
+
+        public float FNear { get => fNear; set { fNear = value; UpdateProjectionMatrix(); } }
+        public float FFar { get => fFar; set { fFar = value; UpdateProjectionMatrix(); } }
+        public float Fov { get => fov; set { fov = value; UpdateProjectionMatrix(); } }
+        public float AspectRatio => DrawWidth / DrawHeight;
         public float FovRad => 1f / (float)Math.Tan(Fov * 0.5f / 180 * Math.PI);
 
         public SpatialSpaceDisplay() => Texture = Texture.WhitePixel;
 
-        private Mat4x4 matProj;
-
         public List<Object3D> Meshes = new List<Object3D>();
 
-        protected override void LoadComplete()
-        {
-            matProj.M00 = AspectRatio * FovRad;
-            matProj.M11 = FovRad;
-            matProj.M22 = FFar / (FFar - FNear);
-            matProj.M32 = -FFar * FNear / (FFar - FNear);
-            matProj.M23 = 1;
-            matProj.M33 = 0;
+        protected override void LoadComplete() => UpdateProjectionMatrix();
 
-            base.LoadComplete();
+        private void UpdateProjectionMatrix()
+        {
+            projectionMatrix.M00 = AspectRatio * FovRad;
+            projectionMatrix.M11 = FovRad;
+            projectionMatrix.M22 = FFar / (FFar - FNear);
+            projectionMatrix.M32 = -FFar * FNear / (FFar - FNear);
+            projectionMatrix.M23 = 1;
+            projectionMatrix.M33 = 0;
         }
 
         protected override DrawNode CreateDrawNode() => new SpatialSpaceDrawNode(this);
@@ -51,57 +55,19 @@ namespace osu.Framework.ThirdDimension
             {
                 var source = Source as SpatialSpaceDisplay;
 
-                var matRotZ = new Mat4x4();
-                var matRotX = new Mat4x4();
-                var fTheta = (float)source.Time.Current * 0.001f;
-
-                // rotZ
-                matRotZ.M00 = (float)Math.Cos(fTheta);
-                matRotZ.M01 = (float)Math.Sin(fTheta);
-                matRotZ.M10 = -(float)Math.Sin(fTheta);
-                matRotZ.M11 = (float)Math.Cos(fTheta);
-                matRotZ.M22 = 1;
-                matRotZ.M33 = 1;
-
-                // rotX
-                matRotX.M00 = 1;
-                matRotX.M11 = (float)Math.Cos(fTheta * 0.5f);
-                matRotX.M12 = (float)Math.Sin(fTheta * 0.5f);
-                matRotX.M21 = -(float)Math.Sin(fTheta * 0.5f);
-                matRotX.M22 = (float)Math.Cos(fTheta * 0.5f);
-                matRotX.M33 = 1;
-
                 foreach (var mesh in source.Meshes)
                 {
                     foreach (var tri in mesh.Triangles)
                     {
-                        var triProjected = new Triangle3D();
+                        var triangle = new Triangle3D(tri.P1 + mesh.Translation, tri.P2 + mesh.Translation, tri.P3 + mesh.Translation);
 
-                        var ttri = new Triangle3D(tri.P1 + mesh.Translation, tri.P2 + mesh.Translation, tri.P3 + mesh.Translation);
+                        var line1 = triangle.P2 - triangle.P1;
 
-                        var triRotatedZ = new Triangle3D();
-                        var triRotatedZX = new Triangle3D();
-
-                        if (mesh.Triangles.Count > 2)
-                        {
-                            Mat4x4.MultiplyMatrixVector(ttri.P1, out triRotatedZ.P1, matRotZ);
-                            Mat4x4.MultiplyMatrixVector(ttri.P2, out triRotatedZ.P2, matRotZ);
-                            Mat4x4.MultiplyMatrixVector(ttri.P3, out triRotatedZ.P3, matRotZ);
-
-                            Mat4x4.MultiplyMatrixVector(triRotatedZ.P1, out triRotatedZX.P1, matRotX);
-                            Mat4x4.MultiplyMatrixVector(triRotatedZ.P2, out triRotatedZX.P2, matRotX);
-                            Mat4x4.MultiplyMatrixVector(triRotatedZ.P3, out triRotatedZX.P3, matRotX);
-                        }
-                        else
-                            triRotatedZX = ttri;
-
-                        var line1 = triRotatedZX.P2 - triRotatedZX.P1;
-
-                        var line2 = triRotatedZX.P3 - triRotatedZX.P1;
+                        var line2 = triangle.P3 - triangle.P1;
 
                         var absNormal = Vector3.Cross(line1, line2);
 
-                        var triTranslated = new Triangle3D(triRotatedZX.P1 - source.CameraPosition, triRotatedZX.P2 - source.CameraPosition, triRotatedZX.P3 - source.CameraPosition);
+                        var triTranslated = new Triangle3D(triangle.P1 - source.CameraPosition, triangle.P2 - source.CameraPosition, triangle.P3 - source.CameraPosition);
 
                         // after camera normals
                         line1 = triTranslated.P2 - triTranslated.P1;
@@ -121,11 +87,13 @@ namespace osu.Framework.ThirdDimension
                         var lightAmount = (Vector3.Dot(absNormal, lightDirection) + 1) * 0.5f;
                         lightAmount *= lightAmountModifier;
 
-                        Mat4x4.MultiplyMatrixVector(triTranslated.P1, out triProjected.P1, source.matProj);
-                        Mat4x4.MultiplyMatrixVector(triTranslated.P2, out triProjected.P2, source.matProj);
-                        Mat4x4.MultiplyMatrixVector(triTranslated.P3, out triProjected.P3, source.matProj);
+                        var triProjected = new Triangle3D();
 
-                        var priTri = new Graphics.Primitives.Triangle(new Vector2(triProjected.P1.X, triProjected.P1.Y) + Vector2.One, new Vector2(triProjected.P2.X, triProjected.P2.Y) + Vector2.One, new Vector2(triProjected.P3.X, triProjected.P3.Y) + Vector2.One);
+                        Mat4x4.MultiplyMatrixVector(triTranslated.P1, out triProjected.P1, source.projectionMatrix);
+                        Mat4x4.MultiplyMatrixVector(triTranslated.P2, out triProjected.P2, source.projectionMatrix);
+                        Mat4x4.MultiplyMatrixVector(triTranslated.P3, out triProjected.P3, source.projectionMatrix);
+
+                        var priTri = new Graphics.Primitives.Triangle(triProjected.P1.Xy + Vector2.One, triProjected.P2.Xy + Vector2.One, triProjected.P3.Xy + Vector2.One);
 
                         priTri = new Graphics.Primitives.Triangle(priTri.P0 * source.DrawSize * 0.5f,
                             priTri.P1 * source.DrawSize * 0.5f,

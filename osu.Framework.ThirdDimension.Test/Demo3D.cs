@@ -8,7 +8,9 @@
         {
             base.LoadComplete();
             Add(spatialDisplay = new SpatialSpaceDisplay { RelativeSizeAxes = Graphics.Axes.Both });
-            spatialDisplay.Meshes.Add(Object3DSamples.GetNewCube());
+            var cube = Object3DSamples.GetNewCube();
+            spatialDisplay.Meshes.Add(cube);
+            cube.Translation = new osuTK.Vector3(1);
         }
     }
 }

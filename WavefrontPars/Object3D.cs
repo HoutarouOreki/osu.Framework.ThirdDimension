@@ -8,6 +8,7 @@ namespace WavefrontPars
         public string Name { get; set; }
         public List<Triangle3D> Triangles { get; } = new List<Triangle3D>();
         public Vector3 Translation;
+        public Quaternion Rotation;
 
         public Object3D(string name, IEnumerable<Triangle3D> triangles)
         {
