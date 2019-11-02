@@ -46,6 +46,8 @@ namespace osu.Framework.ThirdDimension
         protected override void LoadComplete()
         {
             UpdateProjectionMatrix();
+            RelativeSizeAxes = Axes.Both;
+            FillMode = FillMode.Fit;
             base.LoadComplete();
         }
 
@@ -102,11 +104,14 @@ namespace osu.Framework.ThirdDimension
                             priTri.P1 * source.DrawSize * 0.5f,
                             priTri.P2 * source.DrawSize * 0.5f);
 
-                        DrawTriangle(Texture, priTri,
+                        if (DrawRectangle.Contains(priTri)) // draw only if visible on screen
+                        {
+                            DrawTriangle(Texture, priTri,
                         new Color4(lightAmount, lightAmount, lightAmount, 1), null, null, new Vector2(InflationAmount.X / DrawRectangle.Width, InflationAmount.Y / DrawRectangle.Height));
-                        DrawLine(priTri.P0, priTri.P1);
-                        DrawLine(priTri.P1, priTri.P2);
-                        DrawLine(priTri.P2, priTri.P0);
+                            DrawLine(priTri.P0, priTri.P1);
+                            DrawLine(priTri.P1, priTri.P2);
+                            DrawLine(priTri.P2, priTri.P0);
+                        }
                     }
                 }
             }

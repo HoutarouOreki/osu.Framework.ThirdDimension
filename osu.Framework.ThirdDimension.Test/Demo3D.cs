@@ -17,7 +17,7 @@ namespace osu.Framework.ThirdDimension.Test
             //var cube = Object3DSamples.GetNewCube();
             //spatialDisplay.Objects.Add(cube);
             //cube.Translation = new Vector3(0, 0, 0);
-            spatialDisplay.GlobalLightDirection = new Vector3(0, 1, 0);
+            spatialDisplay.GlobalLightDirection = new Vector3(0, -1, 0);
             var cone = Object3DSamples.GetNewCone();
             spatialDisplay.Objects.Add(cone);
         }
